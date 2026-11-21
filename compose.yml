@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: fala-inteligente-postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME:-falainteligente}
+      POSTGRES_USER: ${DB_USER:-app}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-app}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - fala_inteligente_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-app} -d ${DB_NAME:-falainteligente}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  fala_inteligente_pgdata:
