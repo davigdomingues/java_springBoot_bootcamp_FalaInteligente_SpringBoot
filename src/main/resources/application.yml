@@ -1,0 +1,81 @@
+spring:
+  application:
+    name: fala-inteligente
+  datasource:
+    url: jdbc:h2:mem:falainteligentedb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  servlet:
+    multipart:
+      max-file-size: 15MB
+      max-request-size: 16MB
+  ai:
+    model:
+      chat: openai
+      audio:
+        transcription: openai
+        speech: openai
+    openai:
+      api-key: ${OPENAI_API_KEY:not-configured}
+      chat:
+        model: ${OPENAI_CHAT_MODEL:gpt-4o-mini}
+        temperature: 0.2
+      audio:
+        transcription:
+          model: ${OPENAI_STT_MODEL:whisper-1}
+          language: pt
+          temperature: 0
+          response-format: text
+          prompt: >-
+            Áudio em português brasileiro sobre finanças pessoais e orçamento.
+            As frases geralmente contêm valores em reais, ações como gastei, paguei,
+            comprei, recebi, ganhei, estornei, e categorias como mercado, farmácia,
+            combustível, restaurante, moradia, saúde, educação ou salário.
+        speech:
+          model: ${OPENAI_TTS_MODEL:gpt-4o-mini-tts}
+          voice: ${OPENAI_TTS_VOICE:nova}
+          speed: 1.1
+          response-format: mp3
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+fala-inteligente:
+  audio:
+    max-size-bytes: 15728640
+    allowed-extensions:
+      - mp3
+      - mp4
+      - mpeg
+      - mpga
+      - m4a
+      - wav
+      - webm
+      - ogg
+  transaction:
+    max-amount: 1000000.00
+    max-description-length: 200
