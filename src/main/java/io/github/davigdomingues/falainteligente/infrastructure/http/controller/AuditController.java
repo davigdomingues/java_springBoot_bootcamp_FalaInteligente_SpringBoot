@@ -32,7 +32,7 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/api/v1/audit")
-@Tag(name = "AI Audit & Metrics", description = "Trilha de auditoria e telemetria das interações com IA")
+@Tag(name = "Auditoria e Métricas de IA", description = "Trilha de auditoria e telemetria das interações com IA")
 public class AuditController {
 
     private final ListAiAuditLogsUseCase listAiAuditLogsUseCase;
@@ -49,7 +49,7 @@ public class AuditController {
     }
 
     @GetMapping("/interactions")
-    @Operation(summary = "List AI interaction audit logs with optional status and channel filters")
+    @Operation(summary = "Listar registros de auditoria de interações com IA com filtros opcionais de status e canal")
     public ResponseEntity<List<AiInteractionAuditResponse>> listInteractions(
             @RequestParam(required = false) InteractionStatus status,
             @RequestParam(required = false) InteractionChannel channel
@@ -63,10 +63,10 @@ public class AuditController {
     }
 
     @GetMapping("/interactions/{id}")
-    @Operation(summary = "Get an AI interaction audit log by UUID")
+    @Operation(summary = "Consultar registro de auditoria de interação com IA por UUID")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Audit log found"),
-            @ApiResponse(responseCode = "404", description = "Audit log not found",
+            @ApiResponse(responseCode = "200", description = "Registro de auditoria encontrado"),
+            @ApiResponse(responseCode = "404", description = "Registro de auditoria não encontrado",
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     })
     public ResponseEntity<AiInteractionAuditResponse> getInteraction(@PathVariable UUID id) {
@@ -74,7 +74,7 @@ public class AuditController {
     }
 
     @GetMapping("/metrics")
-    @Operation(summary = "Get aggregated AI metrics (success rate, latencies and tool usage counts)")
+    @Operation(summary = "Obter métricas agregadas de IA (taxa de sucesso, latências e contagem de uso de ferramentas)")
     public ResponseEntity<AiMetricsSummaryResponse> getMetrics() {
         return ResponseEntity.ok(AiMetricsSummaryResponse.from(getAiMetricsUseCase.execute()));
     }

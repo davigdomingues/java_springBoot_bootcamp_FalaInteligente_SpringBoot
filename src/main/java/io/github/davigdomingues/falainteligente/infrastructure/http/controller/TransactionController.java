@@ -50,7 +50,7 @@ import java.util.Objects;
  */
 @RestController
 @RequestMapping("/api/v1/transactions")
-@Tag(name = "Transactions", description = "CRUD e relatórios analíticos do orçamento pessoal")
+@Tag(name = "Transações", description = "CRUD e relatórios analíticos do orçamento pessoal")
 public class TransactionController {
 
     private final CreateTransactionUseCase createTransactionUseCase;
@@ -87,13 +87,13 @@ public class TransactionController {
     }
 
     @PostMapping
-    @Operation(summary = "Create a financial transaction",
+    @Operation(summary = "Criar uma transação financeira",
             description = "Registra uma nova despesa ou receita validada e persistida no banco relacional.")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Transaction created successfully"),
-            @ApiResponse(responseCode = "400", description = "Validation or malformed payload error",
+            @ApiResponse(responseCode = "201", description = "Transação criada com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Erro de validação ou payload malformado",
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))),
-            @ApiResponse(responseCode = "422", description = "Domain rule violation",
+            @ApiResponse(responseCode = "422", description = "Violação de regra de domínio",
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     })
     public ResponseEntity<TransactionResponse> createTransaction(
@@ -104,12 +104,12 @@ public class TransactionController {
     }
 
     @GetMapping
-    @Operation(summary = "List financial transactions with optional filters")
+    @Operation(summary = "Listar transações financeiras com filtros opcionais")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Transactions retrieved"),
-            @ApiResponse(responseCode = "400", description = "Invalid query parameter",
+            @ApiResponse(responseCode = "200", description = "Transações recuperadas com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Parâmetro de consulta inválido",
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))),
-            @ApiResponse(responseCode = "422", description = "Invalid date range filter",
+            @ApiResponse(responseCode = "422", description = "Intervalo de datas inválido",
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     })
     public ResponseEntity<List<TransactionResponse>> listTransactions(
@@ -127,12 +127,12 @@ public class TransactionController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get a transaction by UUID")
+    @Operation(summary = "Consultar uma transação por UUID")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Transaction found"),
-            @ApiResponse(responseCode = "404", description = "Transaction not found",
+            @ApiResponse(responseCode = "200", description = "Transação encontrada"),
+            @ApiResponse(responseCode = "404", description = "Transação não encontrada",
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))),
-            @ApiResponse(responseCode = "422", description = "Invalid UUID format",
+            @ApiResponse(responseCode = "422", description = "Formato de UUID inválido",
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     })
     public ResponseEntity<TransactionResponse> getTransaction(@PathVariable String id) {
@@ -140,12 +140,12 @@ public class TransactionController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a transaction by UUID")
+    @Operation(summary = "Remover uma transação por UUID")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Transaction deleted"),
-            @ApiResponse(responseCode = "404", description = "Transaction not found",
+            @ApiResponse(responseCode = "200", description = "Transação removida com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Transação não encontrada",
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))),
-            @ApiResponse(responseCode = "422", description = "Invalid UUID format",
+            @ApiResponse(responseCode = "422", description = "Formato de UUID inválido",
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     })
     public ResponseEntity<TransactionResponse> deleteTransaction(@PathVariable String id) {
@@ -153,7 +153,7 @@ public class TransactionController {
     }
 
     @GetMapping("/summary")
-    @Operation(summary = "Get consolidated financial summary (income, expenses, balance and average expense)")
+    @Operation(summary = "Obter resumo financeiro consolidado (receitas, despesas, saldo e despesa média)")
     public ResponseEntity<FinancialSummaryResponse> getSummary(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
@@ -163,7 +163,7 @@ public class TransactionController {
     }
 
     @GetMapping("/summary/by-category")
-    @Operation(summary = "Get expense breakdown grouped by category")
+    @Operation(summary = "Obter distribuição de despesas agrupadas por categoria")
     public ResponseEntity<List<CategoryBreakdownResponse>> getCategoryBreakdown(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
@@ -177,12 +177,12 @@ public class TransactionController {
     }
 
     @GetMapping("/reports/monthly")
-    @Operation(summary = "Get monthly consolidated financial report")
+    @Operation(summary = "Obter relatório financeiro mensal consolidado")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Monthly report generated"),
-            @ApiResponse(responseCode = "400", description = "Missing year or month query parameter",
+            @ApiResponse(responseCode = "200", description = "Relatório mensal gerado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Parâmetro de consulta ano ou mês ausente",
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))),
-            @ApiResponse(responseCode = "422", description = "Invalid year or month value",
+            @ApiResponse(responseCode = "422", description = "Valor de ano ou mês inválido",
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     })
     public ResponseEntity<MonthlyReportResponse> getMonthlyReport(

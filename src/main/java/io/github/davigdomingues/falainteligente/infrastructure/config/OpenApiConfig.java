@@ -21,7 +21,7 @@ public class OpenApiConfig {
     public OpenAPI falaInteligenteOpenApi() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Fala Inteligente - Financial Voice Assistant API")
+                        .title("Fala Inteligente - API de Assistente Financeiro por Voz")
                         .version("1.0.0")
                         .description("""
                                 API inteligente de orçamento pessoal construída com Java 25, Spring Boot 4, \
@@ -32,7 +32,7 @@ public class OpenApiConfig {
                                 .name("Davi Gabriel Domingues")
                                 .url("https://github.com/davigdomingues"))
                         .license(new License()
-                                .name("MIT License")
+                                .name("Licença MIT")
                                 .url("https://opensource.org/licenses/MIT")));
     }
 }

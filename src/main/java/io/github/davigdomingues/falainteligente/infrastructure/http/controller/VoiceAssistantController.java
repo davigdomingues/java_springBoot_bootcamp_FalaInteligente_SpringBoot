@@ -44,7 +44,7 @@ import java.util.Objects;
  */
 @RestController
 @RequestMapping("/api/v1/assistant")
-@Tag(name = "AI Voice Assistant", description = "Comandos financeiros por voz (STT -> Tool Calling -> TTS) e texto")
+@Tag(name = "Assistente de Voz (IA)", description = "Comandos financeiros por voz (STT -> Tool Calling -> TTS) e texto")
 public class VoiceAssistantController {
 
     private static final MediaType AUDIO_MPEG = MediaType.parseMediaType("audio/mpeg");
@@ -64,16 +64,16 @@ public class VoiceAssistantController {
 
     @PostMapping(value = "/voice", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = "audio/mpeg")
     @Operation(
-            summary = "Process a voice command and return an MP3 spoken response",
+            summary = "Processar comando de voz e retornar resposta falada em MP3",
             description = "Recebe um áudio, transcreve com Whisper/STT, executa Tool Calling via ChatClient e devolve resposta falada em MP3."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Spoken MP3 response generated successfully"),
-            @ApiResponse(responseCode = "400", description = "Missing or empty audio file",
+            @ApiResponse(responseCode = "200", description = "Resposta falada em MP3 gerada com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Arquivo de áudio ausente ou vazio",
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))),
-            @ApiResponse(responseCode = "415", description = "Unsupported audio format",
+            @ApiResponse(responseCode = "415", description = "Formato de áudio não suportado",
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))),
-            @ApiResponse(responseCode = "503", description = "OpenAI provider unavailable or API key missing",
+            @ApiResponse(responseCode = "503", description = "Provedor OpenAI indisponível ou chave de API ausente",
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     })
     public ResponseEntity<Resource> processVoiceAsAudio(@RequestParam("file") MultipartFile file) {
@@ -96,7 +96,7 @@ public class VoiceAssistantController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Operation(
-            summary = "Process a voice command and return structured JSON telemetry",
+            summary = "Processar comando de voz e retornar telemetria estruturada em JSON",
             description = "Retorna transcrição, resposta do assistente, tools acionadas, latências e áudio Base64 opcional."
     )
     public ResponseEntity<AssistantCommandResponse> processVoiceAsJson(
@@ -113,7 +113,7 @@ public class VoiceAssistantController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Operation(
-            summary = "Process a natural language financial command via text",
+            summary = "Processar comando financeiro em linguagem natural via texto",
             description = "Interpreta a mensagem em português brasileiro usando ChatClient + Tool Calling e registra auditoria."
     )
     public ResponseEntity<AssistantCommandResponse> processTextCommand(
@@ -128,7 +128,7 @@ public class VoiceAssistantController {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @Operation(summary = "Transcribe an uploaded audio file into text (Speech-to-Text)")
+    @Operation(summary = "Transcrever arquivo de áudio enviado para texto (Speech-to-Text)")
     public ResponseEntity<TranscriptionResponse> transcribeAudio(@RequestParam("file") MultipartFile file) {
         AssistantCommandOutput output = processVoiceCommandUseCase.transcribeOnly(toAudioPayload(file));
         return ResponseEntity.ok(TranscriptionResponse.from(output));
@@ -139,7 +139,7 @@ public class VoiceAssistantController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = "audio/mpeg"
     )
-    @Operation(summary = "Synthesize MP3 speech from text (Text-to-Speech)")
+    @Operation(summary = "Sintetizar fala em MP3 a partir de texto (Text-to-Speech)")
     public ResponseEntity<Resource> synthesizeSpeech(@Valid @RequestBody SpeechSynthesisRequest request) {
         AssistantCommandOutput output = processTextCommandUseCase.synthesizeOnly(request.text());
         ByteArrayResource resource = new ByteArrayResource(output.audioBytes());
